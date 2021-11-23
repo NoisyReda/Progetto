@@ -14,6 +14,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        //System.out.println(Condivisa.getInstance());                
     }
 
     /**
@@ -99,14 +100,21 @@ public class Main extends javax.swing.JFrame {
         ServerThread s = new ServerThread();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {                
+            public void run() {
                 s.start();
-                while (Condivisa.getInstance().isWait())System.out.println("");;
+                Condivisa.getInstance().setRunning(true);
+                while (Condivisa.getInstance().isWait()) {
+                    System.out.println("");
+                }
                 if (Condivisa.getInstance().isListening()) {
-                    new Main().setVisible(true);
+                    if ("".equals(Condivisa.getInstance().getNomeR())) {
+                        new Reciever().setVisible(true);
+                    } else {
+                        new Main().setVisible(true);
+                    }
                 } else {
                     new FrameSend().setVisible(true);
-                    s.stop();
+                    Condivisa.getInstance().setRunning(false);
                 }
             }
         });

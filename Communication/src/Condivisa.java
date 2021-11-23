@@ -14,11 +14,22 @@ public class Condivisa {
 
     private int port;
     private static Condivisa instance;
-    private String inviato;
     private String ricevuto;
     private boolean listening;
     private InetAddress address;
     private boolean wait;
+    private String nomeR;
+    private String messaggio;
+    private String nomeS;
+    private boolean running;
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
     public InetAddress getAddress() {
         return address;
@@ -40,16 +51,24 @@ public class Condivisa {
         return listening;
     }
 
+    public String getNomeR() {
+        return nomeR;
+    }
+
+    public void setNomeR(String nomeR) {
+        this.nomeR = nomeR;
+    }
+
+    public String getNomeS() {
+        return nomeS;
+    }
+
+    public void setNomeS(String nomeS) {
+        this.nomeS = nomeS;
+    }
+
     public void setListening(boolean listening) {
         this.listening = listening;
-    }
-
-    public String getInviato() {
-        return inviato;
-    }
-
-    public void setInviato(String inviato) {
-        this.inviato = inviato;
     }
 
     public String getRicevuto() {
@@ -62,11 +81,21 @@ public class Condivisa {
 
     private Condivisa() {
         port = 0;
-        inviato = "";
         ricevuto = "";
         listening = false;
         address = null;
         wait = true;
+        messaggio = "";
+        nomeR = "";
+        nomeS = "";
+    }
+
+    public String getMessaggio() {
+        return messaggio;
+    }
+
+    public void setMessaggio(String messaggio) {
+        this.messaggio = messaggio;
     }
 
     public int getPort() {

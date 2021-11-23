@@ -21,7 +21,6 @@ public class Invia {
         byte[] buff = new byte[1500];     
         DatagramPacket dp = new DatagramPacket(buff,buff.length);
         dp.setAddress(Condivisa.getInstance().getAddress());
-        buff = Condivisa.getInstance().getInviato().getBytes();
         dp.setData(buff);
         dp.setPort(12345);
         ds.send(dp);
