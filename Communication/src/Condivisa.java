@@ -1,5 +1,9 @@
 
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,13 +19,21 @@ public class Condivisa {
     private int port;
     private static Condivisa instance;
     private String ricevuto;
-    private boolean listening;
     private InetAddress address;
     private boolean wait;
-    private String nomeR;
+    private String nome;
     private String messaggio;
-    private String nomeS;
     private boolean running;
+    private ArrayList<String> connected;
+    private DatagramSocket ds;
+
+    public ArrayList<String> getConnected() {
+        return connected;
+    }
+
+    public void setConnected(String connected) {
+        this.connected.add(connected);
+    }
 
     public boolean isRunning() {
         return running;
@@ -47,28 +59,12 @@ public class Condivisa {
         this.address = address;
     }
 
-    public boolean isListening() {
-        return listening;
+    public String getNome() {
+        return nome;
     }
 
-    public String getNomeR() {
-        return nomeR;
-    }
-
-    public void setNomeR(String nomeR) {
-        this.nomeR = nomeR;
-    }
-
-    public String getNomeS() {
-        return nomeS;
-    }
-
-    public void setNomeS(String nomeS) {
-        this.nomeS = nomeS;
-    }
-
-    public void setListening(boolean listening) {
-        this.listening = listening;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getRicevuto() {
@@ -79,15 +75,24 @@ public class Condivisa {
         this.ricevuto = ricevuto;
     }
 
+    public DatagramSocket getDs() {
+        return ds;
+    }
+
+    public void setDs() throws SocketException {
+        Random i = new Random();
+        int port = i.nextInt((65535 - 12357) + 1) + 12357;
+        this.ds = new DatagramSocket(port);
+    }
+
     private Condivisa() {
         port = 0;
         ricevuto = "";
-        listening = false;
         address = null;
         wait = true;
         messaggio = "";
-        nomeR = "";
-        nomeS = "";
+        nome = "";
+        connected = new ArrayList<>();
     }
 
     public String getMessaggio() {
@@ -100,10 +105,6 @@ public class Condivisa {
 
     public int getPort() {
         return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
     }
 
     public static Condivisa getInstance() {

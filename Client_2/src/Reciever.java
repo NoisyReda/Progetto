@@ -1,5 +1,4 @@
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /*
@@ -82,8 +81,8 @@ public class Reciever extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (!"".equals(jTextField1.getText())) {
-            Condivisa.getInstance().setNomeR(jTextField1.getText());
-            setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);            
+            Condivisa.getInstance().setNome(jTextField1.getText());
+            this.setVisible(false);
             new Main().setVisible(true);
         } else
             JOptionPane.showMessageDialog(this, "Compila i campi");
