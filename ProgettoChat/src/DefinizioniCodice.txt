@@ -1,0 +1,50 @@
+Controllo che durante una connessione un'altra non possa fare richieste:
+if (new String(dp.getData()).charAt(0) == 'a' && new String(dp.getData()).charAt(1) == ';' && !Data.getInstance().isBusy())  in questo if se l'attributo busy è vero allora se un altro host cercherà di connettersi alla chat esso riceverà una risposta negativa.
+
+Invio di un messaggio dalla chat:
+
+  if (evt.getKeyCode() == 10) {
+            try {
+                if (!jTextField1.getText().equals("") && !jTextField2.getText().equals("") || !"".equals(Data.getInstance().getHostC())) {
+                    try {
+                        Data.getInstance().setMessaggio("");
+                        Data.getInstance().setMessaggio("m" + ";" + jTextArea1.getText());
+                        jLabel3.setText("<html>" + jLabel3.getText() + Data.getInstance().getNome() + ":" + jTextArea1.getText() + "<br>");
+                        Data.getInstance().send();
+                        jTextArea1.setText("");
+                        jTextArea1.setRows(0);
+
+Il primo if è utilizzato per controllare se è stato premuto invio mentre il secondo per verificare che il campo nome e il campo indirizzo non vengano rimossi poichè per via della repaint i due textfield alcune volte si riattivano e possono essere modificati mentre l'ultimo controllo è per verificare che sia presente il nome del destinatario e non sia stato perso o non inviato nella fase iniziale.La label ha causato alcune difficoltà perchè non prevede l'andare a capo con uno "\n".
+
+Repaint della chat:
+
+ super.paint(g);
+        try {
+            if (Data.getInstance().isBusy()) {
+                connesso = true;
+                jTextArea1.enable(true);
+                jTextField1.setText(Data.getInstance().getAddress().getHostName());
+                jTextField2.setText(Data.getInstance().getHostC());
+                jTextField2.enable(false);
+                jButton1.enable(false);
+                if (!"".equals(Data.getInstance().getVisMessaggio())) {
+                    jLabel3.setText("<html>" + jLabel3.getText() + Data.getInstance().getHostC() + ":" + Data.getInstance().getVisMessaggio() + "<br>");
+                    Data.getInstance().setVisMessaggio("");
+                    Data.getInstance().setMessaggio("");
+                }
+            }
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(ChatUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (jTextField2.getText().length() > 0 && !connesso) {
+            jButton1.enable(true);
+            try {
+                Data.getInstance().setNome(jTextField2.getText());
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(ChatUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            jButton1.enable(false);
+        }
+
+Qui la prima cosa controllata è se è presente una connessione con un altro host ed inoltre disabilita i campi nome e indirizzo modificando il primo in modo che mostri il nome dell'host a cui si è connessi, l'attributo connesso viene utilizzato perchè una volta modificato il campo nome anche se disabilitato esso prendeva il nome del destinatario e nella chat veniva mostrato lo stesso nome sia per chi inviava che per chi riceveva, inoltre una volta che è stata stabilita la connessione viene sempre controllato l'attributo messaggio e se al suo interno son presenti messaggi dal destinatario mostrarli nella label.
